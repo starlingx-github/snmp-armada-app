@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name_snmpd }}
+data:
+{{ (.Files.Glob "snmpd/*").AsConfig | indent 2 }}
+---

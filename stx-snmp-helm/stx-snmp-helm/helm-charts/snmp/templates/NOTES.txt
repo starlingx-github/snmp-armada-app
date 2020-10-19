@@ -1,0 +1,6 @@
+1. This is SNMP deployment with extended MIB:
+   This charts starts:
+   - Create config map for /etc/snmp/snmpd.conf
+   - Deploy snmpd
+   - Create service for port for snmp get
+   - Deploy sub agent for extended MIB
