@@ -1,0 +1,3 @@
+BUILDER=docker
+LABEL=stx-fm-subagent
+DOCKER_CONTEXT=docker/stx-fm-subagent

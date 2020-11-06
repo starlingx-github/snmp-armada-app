@@ -1,0 +1,3 @@
+BUILDER=docker
+LABEL=stx-snmp
+DOCKER_CONTEXT=docker/stx-snmp

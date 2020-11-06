@@ -5,15 +5,26 @@
 replicaCount: 1
 
 image:
-  repository: registry.local:9001/local/snmp
-  tag: 1.0.0
+  repository: registry.local:9001/docker.io/starlingx/stx-snmp
+  tag: stx.5.0-1.0.0
   pullPolicy: IfNotPresent
+  subagent_name: sub-agent
+  repository_subagent: registry.local:9001/docker.io/starlingx/stx-fm-subagent
+  tag_subagent: stx.5.0-1.0.0
+  pullPolicy_subagent: IfNotPresent
+  trap_subagent_name: trap-subagent
+  repository_trap_subagent: registry.local:9001/docker.io/starlingx/stx-fm-trap-subagent
+  tag_trap_subagent: stx.5.0-1.0.0
+  pullPolicy_trap_subagent: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
 
 configmap:
   name_snmpd: snmpd-etc-config
+  name_fm: snmpd-fm
+  user_conf: '# User configuration'
+  connection: ''
 
 deployment:
   master_agent_host: localhost

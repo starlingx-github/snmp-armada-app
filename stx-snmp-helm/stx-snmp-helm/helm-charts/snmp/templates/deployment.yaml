@@ -18,7 +18,11 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "snmp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
     spec:
+      imagePullSecrets:
+        - name: default-registry-key
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -28,10 +32,28 @@ spec:
             protocol: UDP
           - containerPort: 162
             protocol: UDP
+          - containerPort: 705
+            protocol: TCP
           volumeMounts:
           - name: snmpd-etc-volume
             mountPath: /etc/snmp
+        - name: {{ .Values.image.subagent_name }}
+          image: "{{ .Values.image.repository_subagent }}:{{ .Values.image.tag_subagent }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy_subagent }}
+          volumeMounts:
+          - name: snmpd-fm-volume
+            mountPath: /etc/fm/
+        - name: {{ .Values.image.trap_subagent_name }}
+          image: "{{ .Values.image.repository_trap_subagent }}:{{ .Values.image.tag_trap_subagent }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy_trap_subagent }}
+          ports:
+          - containerPort: 162
+            protocol: TCP
+
       volumes:
       - name: snmpd-etc-volume
         configMap:
           name: {{ .Values.configmap.name_snmpd }}
+      - name: snmpd-fm-volume
+        configMap:
+          name: {{ .Values.configmap.name_fm }}

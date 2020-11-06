@@ -25,6 +25,8 @@ Source0: helm-charts-snmp-0-1-0.tar.gz
 BuildArch: noarch
 
 BuildRequires: helm
+BuildRequires: python-k8sapp-snmp
+BuildRequires: python-k8sapp-snmp-wheels
 
 %description
 StarlingX SNMP Helm Charts
@@ -54,6 +56,10 @@ cd %{app_staging}
 sed -i 's/@APP_NAME@/%{app_name}/g' %{app_staging}/metadata.yaml
 sed -i 's/@APP_VERSION@/%{version}-%{tis_patch_ver}/g' %{app_staging}/metadata.yaml
 sed -i 's/@HELM_REPO@/%{helm_repo}/g' %{app_staging}/metadata.yaml
+
+# Copy the plugins: installed in the buildroot
+mkdir -p %{app_staging}/plugins
+cp /plugins/%{app_name}/*.whl %{app_staging}/plugins
 
 # package it up
 find . -type f ! -name '*.md5' -print0 | xargs -0 md5sum > checksum.md5

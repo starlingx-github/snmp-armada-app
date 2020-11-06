@@ -10,10 +10,19 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: port-1
+    - name: port-snmp
       port: 161
       protocol: UDP
       targetPort: 161
+    - name: port-agentx
+      port: 705
+      protocol: TCP
+      targetPort: 705
+    - name: port-trap
+      port: 162
+      protocol: TCP
+      targetPort: 162
+
   selector:
     app.kubernetes.io/name: {{ include "snmp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
