@@ -34,6 +34,25 @@ spec:
             protocol: UDP
           - containerPort: 705
             protocol: TCP
+          # Issues with liveness and readiness: https://bit.ly/3nVRQrL
+          # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
+          #
+          # livenessProbe:
+          #   tcpSocket:
+          #     port: 705
+          #   initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          #   successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          #   failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: 705
+          #   initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          #   successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          #   failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           volumeMounts:
           - name: snmpd-etc-volume
             mountPath: /etc/snmp
@@ -43,12 +62,58 @@ spec:
           volumeMounts:
           - name: snmpd-fm-volume
             mountPath: /etc/fm/
+          # Fail on liveness and readiness as here: https://bit.ly/3nVRQrL
+          # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
+          #
+          # args:
+          #   - /bin/sh
+          #   - -c
+          #   - touch /tmp/healthy
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #     - cat
+          #     - /tmp/healthy
+          #   initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          #   successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          #   failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #     - cat
+          #     - /tmp/healthy
+          #   initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          #   successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          #   failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         - name: {{ .Values.image.trap_subagent_name }}
           image: "{{ .Values.image.repository_trap_subagent }}:{{ .Values.image.tag_trap_subagent }}"
           imagePullPolicy: {{ .Values.image.pullPolicy_trap_subagent }}
           ports:
           - containerPort: 162
             protocol: TCP
+          # Fail on liveness and readiness as here: https://bit.ly/3nVRQrL
+          # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
+          #
+          # livenessProbe:
+          #   tcpSocket:
+          #     port: 162
+          #   initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          #   successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          #   failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: 162
+          #   initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          #   successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          #   failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
 
       volumes:
       - name: snmpd-etc-volume
