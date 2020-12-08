@@ -5,7 +5,7 @@ RUN yum -y install\
            net-snmp-devel \
            make
 
-RUN dnf -y --enablerepo=PowerTools install json-c-devel
+RUN dnf -y --enablerepo=powertools install json-c-devel
 WORKDIR /home/trapagent
 COPY src/* ./src/
 COPY Makefile .
