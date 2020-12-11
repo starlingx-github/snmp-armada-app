@@ -6,7 +6,6 @@ RUN yum -y install\
            fm-common-dev
 
 FROM centos:7 AS base
-
 RUN yum -y install\
            net-snmp \
            net-snmp-utils \
@@ -38,7 +37,6 @@ RUN make
 
 
 FROM base AS deployment-env
-
 COPY --from=builder /home/sub-agent/snmpSubAgent .
 COPY bootstrap.sh .
 RUN chmod 755 bootstrap.sh

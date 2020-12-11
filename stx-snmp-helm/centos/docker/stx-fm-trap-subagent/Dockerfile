@@ -23,4 +23,3 @@ COPY --from=builder /home/trapagent/wrsAlarmMIB .
 COPY bootstrap.sh .
 RUN chmod 755 ./bootstrap.sh
 ENTRYPOINT ["./bootstrap.sh"]
-

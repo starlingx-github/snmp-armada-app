@@ -34,6 +34,9 @@ spec:
             protocol: UDP
           - containerPort: 705
             protocol: TCP
+          env:
+          - name: "OPTIONDEBUG"
+            value: {{ .Values.image.debug }}
           # Issues with liveness and readiness: https://bit.ly/3nVRQrL
           # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
           #
@@ -62,6 +65,9 @@ spec:
           volumeMounts:
           - name: snmpd-fm-volume
             mountPath: /etc/fm/
+          env:
+          - name: "OPTIONDEBUG"
+            value: {{ .Values.image.debug }}
           # Fail on liveness and readiness as here: https://bit.ly/3nVRQrL
           # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
           #
@@ -95,6 +101,9 @@ spec:
           ports:
           - containerPort: 162
             protocol: TCP
+          env:
+          - name: "OPTIONDEBUG"
+            value: {{ .Values.image.debug }}
           # Fail on liveness and readiness as here: https://bit.ly/3nVRQrL
           # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
           #
