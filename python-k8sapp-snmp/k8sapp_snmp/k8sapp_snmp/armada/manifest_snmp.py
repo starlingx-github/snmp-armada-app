@@ -16,6 +16,7 @@ class SnmpArmadaManifestOperator(base.ArmadaManifestOperator):
   APP = constants.HELM_APP_SNMP
   ARMADA_MANIFEST = 'armada-manifest'
 
+  # TODO: remove this once Ic83fbd25d23ae34889cb288330ec448f920bda39 merges
   def app_lifecycle_actions(self, context, conductor_obj, dbapi, operation, relative_timing):
     if operation == constants.APP_APPLY_OP or operation == constants.APP_REMOVE_OP:
       if relative_timing == constants.APP_LIFECYCLE_POST:
