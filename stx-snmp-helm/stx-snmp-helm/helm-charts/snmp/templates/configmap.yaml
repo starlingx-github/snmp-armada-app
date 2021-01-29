@@ -5,6 +5,10 @@ metadata:
 data:
 {{ (.Files.Glob "snmpd/*").AsConfig | indent 2 }}
 {{ .Values.configmap.user_conf | indent 4 }}
+    sysDescr {{ .Values.configmap.system_description }}
+    sysContact {{ .Values.configmap.system_contact }}
+    sysName {{ .Values.configmap.system_name }}
+    sysLocation {{ .Values.configmap.system_location }}
 ---
 apiVersion: v1
 kind: ConfigMap

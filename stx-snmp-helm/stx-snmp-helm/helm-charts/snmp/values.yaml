@@ -25,6 +25,10 @@ configmap:
   name_snmpd: snmpd-etc-config
   name_fm: snmpd-fm
   user_conf: '# User configuration'
+  system_description: ''
+  system_contact: ''
+  system_name: ''
+  system_location: ''
   connection: ''
 
 deployment:
