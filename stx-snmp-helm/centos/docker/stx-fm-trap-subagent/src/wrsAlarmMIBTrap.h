@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 Wind River Systems, Inc.
+* Copyright (c) 2020-2021 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -19,5 +19,6 @@ int send_wrsEventMessage_trap(struct json_object *);
 int send_wrsAlarmClear_trap(struct json_object *);
 int send_wrsAlarmHierarchicalClear_trap(struct json_object *);
 int send_wrsWarmStart_trap(void);
+int process_json_alarm(const char*  msg);
 
 #endif /* WRSALARMMIBTRAP_H */

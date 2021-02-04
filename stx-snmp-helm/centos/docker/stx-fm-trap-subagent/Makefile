@@ -16,7 +16,8 @@ STRICT_FLAGS = -Wall -Wstrict-prototypes
 CFLAGS=-I. $(NETSNMPCFLAGS) $(STRICT_FLAGS) -fPIC
 
 SRCS = $(SOURCE)/$(PREFIX)Trap.c \
-	$(SOURCE)/$(PREFIX)Subagent.c
+	$(SOURCE)/$(PREFIX)Subagent.c \
+	$(SOURCE)/$(PREFIX)Server.c
 
 OBJS = $(SRCS:.c=.o)
 
