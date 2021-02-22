@@ -1,11 +1,12 @@
 /*
-* Copyright (c) 2020 Wind River Systems, Inc.
+* Copyright (c) 2020-2021 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
 */
 
 #include <net-snmp/net-snmp-config.h>
+#include <net-snmp/net-snmp-features.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
 
@@ -30,6 +31,15 @@
 #define EVENT_EVENT_TYPE "wrsEventEventType"
 #define EVENT_CAUSE "wrsEventProbableCause"
 #define EVENT_SERVICE_AFFECTING "wrsEventServiceAffecting"
+
+#define ALARM_CRITICAL "wrsAlarmCritical"
+#define ALARM_MAJOR "wrsAlarmMajor"
+#define ALARM_MINOR "wrsAlarmMinor"
+#define ALARM_WARNING "wrsAlarmWarning"
+#define ALARM_MSG "wrsAlarmMessage"
+#define ALARM_CLEAR "wrsAlarmClear"
+#define ALARM_HIERARCHICAL_CLEAR "wrsAlarmHierarchicalClear"
+#define WARM_START "warmStart"
 
 extern const oid snmptrap_oid[];
 extern const size_t snmptrap_oid_len;
@@ -894,4 +904,51 @@ send_wrsWarmStart_trap()
     snmp_free_varbind( var_list );
 
     return SNMP_ERR_NOERROR;
+}
+
+int
+process_json_alarm(const char* msg )
+{
+
+    if(msg == NULL) {
+        snmp_log(LOG_ERR,"JSON message alarm to processs is null\n");
+        return 1;
+    }
+
+    struct json_object *parsed_json = json_tokener_parse(msg);
+    struct json_object *operation_type;
+    json_object_object_get_ex(parsed_json, "operation_type", &operation_type);
+    const char *opt_type = json_object_get_string(operation_type);
+
+    if (strcmp(ALARM_CLEAR, opt_type) == 0) {
+        send_wrsAlarmClear_trap(parsed_json);
+    }
+    else if (strcmp(ALARM_HIERARCHICAL_CLEAR, opt_type) == 0) {
+        send_wrsAlarmHierarchicalClear_trap(parsed_json);
+    }
+    else if (strcmp(ALARM_MSG, opt_type) == 0) {
+        send_wrsEventMessage_trap(parsed_json);
+    }
+    else if (strcmp(ALARM_WARNING, opt_type) == 0) {
+        send_wrsAlarmWarning_trap(parsed_json);
+    }
+    else if (strcmp(ALARM_MINOR, opt_type) == 0) {
+        send_wrsAlarmMinor_trap(parsed_json);
+    }
+    else if (strcmp(ALARM_MAJOR, opt_type) == 0) {
+        send_wrsAlarmMajor_trap(parsed_json);
+    }
+    else if (strcmp(ALARM_CRITICAL, opt_type) == 0) {
+        send_wrsAlarmCritical_trap(parsed_json);
+    }
+    else if (strcmp(WARM_START, opt_type) == 0) {
+        send_wrsWarmStart_trap();
+    }
+    else {
+        send_wrsAlarmMessage_trap(parsed_json);
+    }
+
+    json_object_put(parsed_json);
+
+    return 0;
 }
