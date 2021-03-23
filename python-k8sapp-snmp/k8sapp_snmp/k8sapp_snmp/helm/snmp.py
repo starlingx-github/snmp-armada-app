@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-
+import keyring
 from k8sapp_snmp.common import constants as app_constants
 from os import uname
 
@@ -12,15 +12,14 @@ from six import ensure_str
 from six import ensure_text
 from six import string_types
 from sysinv.common import constants
-from sysinv.common import exception 
+from sysinv.common import exception
 from sysinv.db import api
 from sysinv.helm import base
 from sysinv.helm import common
-from sysinv.puppet import openstack
 
 
 
-class SnmpHelm(base.BaseHelm, openstack.OpenstackBasePuppet):
+class SnmpHelm(base.BaseHelm):
     """Class to encapsulate helm operations for the SNMP chart"""
 
     SUPPORTED_NAMESPACES = base.BaseHelm.SUPPORTED_NAMESPACES + \
@@ -35,6 +34,7 @@ class SnmpHelm(base.BaseHelm, openstack.OpenstackBasePuppet):
     SERVICE_NAME = 'snmp'
     SERVICE_FM_NAME = 'fm'
     SERVICE_FM_PORT = 18002
+    DB_FM_ADMIN = 'admin-fm'
     UNDEFINED_CONF_VALUE = '?'
     KERNEL_RELEASE_IDX = 2
 
@@ -52,6 +52,24 @@ class SnmpHelm(base.BaseHelm, openstack.OpenstackBasePuppet):
             #If data is NoneType
             return ensure_str(self.UNDEFINED_CONF_VALUE)
 
+    def _get_keyring_password(self, service, user):
+        password = keyring.get_password(service, user)
+        if not password:
+            raise Exception('Failed to obtain password for fm database')
+        # get_password() returns in unicode format, which leads to YAML
+        # that Armada doesn't like.  Converting to UTF-8 is safe because
+        # we generated the password originally.
+        return password.encode('utf8', 'strict')
+
+    def _get_database_connection(self):
+        host_url = self._format_url_address(self._get_management_address())
+        auth_password = self._get_keyring_password(
+            self.SERVICE_FM_NAME, 'database')
+        connection = "postgresql://%s:%s@%s/%s" %\
+                     (self.DB_FM_ADMIN, auth_password,
+                     host_url, self.SERVICE_FM_NAME)
+        return connection
+
     def get_namespaces(self):
         return self.SUPPORTED_NAMESPACES
 
@@ -64,19 +82,12 @@ class SnmpHelm(base.BaseHelm, openstack.OpenstackBasePuppet):
     def get_admin_url(self):
         return self._format_admin_endpoint(self.SERVICE_FM_PORT)
 
-    def get_secure_system_config(self):
-        config = {
-            'fm::database_connection':
-                self._format_database_connection(self.SERVICE_FM_NAME),
-        }
-        return config
-
     def get_system_info(self):
         return uname()[self.KERNEL_RELEASE_IDX]
 
     def get_overrides(self, namespace=None):
 
-        db_url = self.get_secure_system_config()['fm::database_connection']
+        db_url = self._get_database_connection()
         dbapi = api.get_instance()
 
         # Get the contact, location, name and desciption info
