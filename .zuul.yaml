@@ -3,13 +3,32 @@
     check:
       jobs:
         - openstack-tox-linters
+        - k8app-snmp-armada-tox-py39
     gate:
       jobs:
         - openstack-tox-linters
+        - k8app-snmp-armada-tox-py39
     post:
       jobs:
         - stx-snmp-armada-app-upload-git-mirror
 
+- job:
+    name: k8app-snmp-armada-tox-py39
+    parent: tox-py39
+    description: |
+        Run py39 test for k8app-snmp-armada-app
+    nodeset: debian-bullseye
+    required-projects:
+        - starlingx/config
+        - starlingx/fault
+        - starlingx/update
+        - starlingx/utilities
+    files:
+        - python-k8sapp-snmp/k8sapp_snmp/*
+    vars:
+        tox_envlist: py39
+        python_version: 3.9
+        tox_extra_args: python-k8sapp-snmp/k8sapp_snmp/tox.ini
 - job:
     name: stx-snmp-armada-app-upload-git-mirror
     parent: upload-git-mirror

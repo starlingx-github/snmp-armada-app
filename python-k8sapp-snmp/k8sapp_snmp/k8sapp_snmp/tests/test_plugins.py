@@ -4,6 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import mock
+
+from k8sapp_snmp.helm.snmp import SnmpHelm
+
 from sysinv.common import constants
 from sysinv.tests.db import base as dbbase
 from sysinv.tests.helm.test_helm import HelmOperatorTestSuiteMixin
@@ -15,6 +19,10 @@ class K8SAppSnmpAppMixin(object):
 
     def setUp(self):
         super(K8SAppSnmpAppMixin, self).setUp()
+        get_db_connection = mock.patch.object(SnmpHelm,
+                '_get_database_connection')
+        self.mock_save_overrides = get_db_connection.start()
+        self.addCleanup(get_db_connection.stop)
 
 
 # Test Configuration:
