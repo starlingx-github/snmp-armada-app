@@ -33,6 +33,8 @@ configmap:
 
 deployment:
   master_agent_host: localhost
+  master_agent_port: 705
+  master_agent_connection_retries: 20
 
 service:
   name: snmpd-service
