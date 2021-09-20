@@ -68,6 +68,12 @@ spec:
           env:
           - name: "OPTIONDEBUG"
             value: {{ .Values.image.debug }}
+          - name: "MASTER_AGENT_HOST"
+            value: {{ .Values.deployment.master_agent_host | quote}}
+          - name: "MASTER_AGENT_PORT"
+            value: {{ .Values.deployment.master_agent_port | quote}}
+          - name: "MASTER_AGENT_CONNECTION_RETRIES"
+            value: {{ .Values.deployment.master_agent_connection_retries | quote}}
           # Fail on liveness and readiness as here: https://bit.ly/3nVRQrL
           # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
           #
@@ -104,6 +110,12 @@ spec:
           env:
           - name: "OPTIONDEBUG"
             value: {{ .Values.image.debug }}
+          - name: "MASTER_AGENT_HOST"
+            value: {{ .Values.deployment.master_agent_host | quote}}
+          - name: "MASTER_AGENT_PORT"
+            value: {{ .Values.deployment.master_agent_port | quote}}
+          - name: "MASTER_AGENT_CONNECTION_RETRIES"
+            value: {{ .Values.deployment.master_agent_connection_retries | quote}}
           # Fail on liveness and readiness as here: https://bit.ly/3nVRQrL
           # K8s issue related: https://github.com/kubernetes/kubernetes/issues/81713
           #
@@ -123,7 +135,6 @@ spec:
           #   timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           #   successThreshold: {{ .Values.readinessProbe.successThreshold }}
           #   failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
-
       volumes:
       - name: snmpd-etc-volume
         configMap:
