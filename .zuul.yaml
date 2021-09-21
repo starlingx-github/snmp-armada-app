@@ -4,10 +4,12 @@
       jobs:
         - openstack-tox-linters
         - k8app-snmp-armada-tox-py39
+        - k8sapp-snmp-tox-pylint
     gate:
       jobs:
         - openstack-tox-linters
         - k8app-snmp-armada-tox-py39
+        - k8sapp-snmp-tox-pylint
     post:
       jobs:
         - stx-snmp-armada-app-upload-git-mirror
@@ -41,6 +43,22 @@
       - name: git_mirror_credentials
         secret: stx-snmp-armada-app-github-secret
         pass-to-parent: true
+
+- job:
+    name: k8sapp-snmp-tox-pylint
+    parent: tox
+    description: |
+      Run pylint test for k8sapp_snmp
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/update
+      - starlingx/utilities
+    files:
+      - python-k8sapp-snmp/*
+    vars:
+      tox_envlist: pylint
+      tox_extra_args: -c python-k8sapp-snmp/k8sapp_snmp/tox.ini
 
 - secret:
     name: stx-snmp-armada-app-github-secret
