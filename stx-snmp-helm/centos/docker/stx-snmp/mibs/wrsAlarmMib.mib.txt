@@ -25,12 +25,12 @@ DEFINITIONS ::= BEGIN
                     E-mail: support@windriver.com
                     Phone : 510.748.4100"
        DESCRIPTION "This module contains objects of the
-                    Titanium Cloud Alarm MIB, 
+                    Wind River Cloud Platform (WRCP) Alarm MIB, 
                     including notifications."
 
       -- Revision history
       REVISION     "201703310000Z"
-      DESCRIPTION  "Titanium Cloud Release 4 version, with new Event table and removal of deprecated customer and alarm history tables."
+      DESCRIPTION  "Wind River Cloud Platform Release 4 version, with new Event table and removal of deprecated customer and alarm history tables."
       ::= { wrsAlarms 1 }      
      
    wrsAlarmObjects      OBJECT IDENTIFIER ::= { wrsAlarmMIB 1 }
