@@ -64,9 +64,7 @@ IMPORTS
     wrsAlarms       OBJECT IDENTIFIER ::= { wrsCommon 1 } -- Common WRS Enterprise Alarm MIB
 
 -- WRS Products
---  tms1_0          OBJECT IDENTIFIER ::= { wrs 1 } Obsolete
-    tms             OBJECT IDENTIFIER ::= { wrs 2 }
-    wrsTs         OBJECT IDENTIFIER ::= { wrs 3 } -- WRS Titanium Cloud specific Enterprise MIBs
+
 
 
 
