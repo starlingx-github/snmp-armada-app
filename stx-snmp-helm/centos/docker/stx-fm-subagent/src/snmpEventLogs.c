@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 Wind River Systems, Inc.
+* Copyright (c) 2020-2021 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -26,6 +26,7 @@ static long Event_Log_Count = 0;
 static struct activealarm *alarm_list;
 static struct activealarm *alarmaddr, savealarm, *savealarmaddr;
 static int saveIndex = 0;
+static int retryCount = 5;
 static char saveUuid[36];
 static long LastLoad = 0;     /* ET in secs at last table load */
 extern long long_return;
@@ -64,7 +65,19 @@ Event_Log_Scan_Init()
     /*
      * query event log list from DB
      */
-    if (fm_snmp_util_get_all_event_logs(getAlarmSession(), &aquery) != true){
+    bool isEventObtained = false;
+    for (i = 0; i < retryCount; i++){
+        if (fm_snmp_util_get_all_event_logs(getAlarmSession(), &aquery)){
+            DEBUGMSG(("cgtsAgentPlugin", "get_all_event_logs done\n"));
+            isEventObtained = true;
+            break;
+        } else {
+            DEBUGMSG(("cgtsAgentPlugin", 
+            "get_all_event_logs returns false (%zu/%d). Try again\n",
+             (i+1), retryCount));
+        }
+    }
+    if (!isEventObtained) {
         DEBUGMSG(("cgtsAgentPlugin", "get_all_event_logs from db failed\n"));
         return;
     }
