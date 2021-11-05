@@ -1,0 +1,5 @@
+python3-k8sapp-snmp (1.0-1) unstable; urgency=medium
+
+  * Initial release.
+
+ --  Tracey Bogue <tracey.bogue@windriver.com>  Fri, 5 Nov 2021 08:06:42 +0000

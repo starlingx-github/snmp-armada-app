@@ -1,0 +1,17 @@
+Source: stx-snmp-helm
+Section: libs
+Priority: optional
+Maintainer: StarlingX Developers <starlingx-discuss@lists.starlingx.io>
+Build-Depends: debhelper-compat (= 13),
+ helm,
+ python3-k8sapp-snmp,
+ python3-k8sapp-snmp-wheels
+Standards-Version: 4.5.1
+Homepage: https://www.starlingx.io
+
+Package: stx-snmp-helm
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}
+Description: StarlingX SNMP Armada Helm Charts
+ This package contains Armada helm charts for the SNMP application.
