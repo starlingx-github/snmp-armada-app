@@ -14,7 +14,7 @@ image:
   pullPolicy_subagent: IfNotPresent
   trap_subagent_name: trap-subagent
   repository_trap_subagent: docker.io/starlingx/stx-fm-trap-subagent
-  tag_trap_subagent: stx.5.0-v1.0.2
+  tag_trap_subagent: stx.6.0-v1.0.2
   pullPolicy_trap_subagent: IfNotPresent
   debug: ''
 
