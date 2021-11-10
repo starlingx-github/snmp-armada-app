@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: docker.io/starlingx/stx-snmp
-  tag: stx.5.0-v1.0.0
+  tag: stx.6.0-v1.0.1
   pullPolicy: IfNotPresent
   subagent_name: sub-agent
   repository_subagent: docker.io/starlingx/stx-fm-subagent
