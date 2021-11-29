@@ -29,8 +29,8 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.snmp.image.repository }}:{{ .Values.snmp.image.tag }}"
+          imagePullPolicy: {{ .Values.snmp.pull_policy }}
           ports:
           - containerPort: 161
             protocol: UDP
@@ -63,9 +63,9 @@ spec:
           volumeMounts:
           - name: snmpd-etc-volume
             mountPath: /etc/snmp
-        - name: {{ .Values.image.subagent_name }}
-          image: "{{ .Values.image.repository_subagent }}:{{ .Values.image.tag_subagent }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy_subagent }}
+        - name: {{ .Values.subagent.name }}
+          image: "{{ .Values.subagent.image.repository }}:{{ .Values.subagent.image.tag }}"
+          imagePullPolicy: {{ .Values.subagent.pull_policy }}
           volumeMounts:
           - name: snmpd-fm-volume
             mountPath: /etc/fm/
@@ -105,9 +105,9 @@ spec:
           #   timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           #   successThreshold: {{ .Values.readinessProbe.successThreshold }}
           #   failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
-        - name: {{ .Values.image.trap_subagent_name }}
-          image: "{{ .Values.image.repository_trap_subagent }}:{{ .Values.image.tag_trap_subagent }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy_trap_subagent }}
+        - name: {{ .Values.trap_subagent.name }}
+          image: "{{ .Values.trap_subagent.image.repository }}:{{ .Values.trap_subagent.image.tag }}"
+          imagePullPolicy: {{ .Values.trap_subagent.pull_policy }}
           ports:
           - containerPort: 162
             protocol: TCP
