@@ -23,10 +23,14 @@ spec:
     spec:
       imagePullSecrets:
         - name: default-registry-key
+{{- with .Values.tolerations }}
       tolerations:
-        - key: "node-role.kubernetes.io/master"
-          operator: "Exists"
-          effect: "NoSchedule"
+{{ toYaml . | indent 6 }}
+{{- end }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ .Values.nodeSelector | toYaml | trim | indent 8 }}
+{{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.snmp.image.repository }}:{{ .Values.snmp.image.tag }}"

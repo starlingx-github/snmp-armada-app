@@ -30,6 +30,13 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+nodeSelector: { node-role.kubernetes.io/master: "" }
+
+tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
+
 configmap:
   name_snmpd: snmpd-etc-config
   name_fm: snmpd-fm
