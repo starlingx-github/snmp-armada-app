@@ -1,4 +1,5 @@
 FROM centos:8 AS builder
+RUN sed -i -e 's%^mirrorlist=%#mirrorlist=%' -e 's%^#baseurl=http://mirror%baseurl=https://vault%' /etc/yum.repos.d/*repo
 RUN yum -y update && yum upgrade
 RUN yum -y install\
            net-snmp-libs \
@@ -13,6 +14,7 @@ RUN make
 
 
 FROM centos:8
+RUN sed -i -e 's%^mirrorlist=%#mirrorlist=%' -e 's%^#baseurl=http://mirror%baseurl=https://vault%' /etc/yum.repos.d/*repo
 RUN yum -y update && yum upgrade
 RUN yum -y install\
            net-snmp \
