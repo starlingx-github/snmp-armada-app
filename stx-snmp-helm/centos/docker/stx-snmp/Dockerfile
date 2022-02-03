@@ -1,4 +1,5 @@
 FROM centos:8 AS builder
+RUN sed -i -e 's%^mirrorlist=%#mirrorlist=%' -e 's%^#baseurl=http://mirror%baseurl=https://vault%' /etc/yum.repos.d/*repo
 RUN yum -y update
 RUN yum -y upgrade
 RUN yum -y install \
@@ -14,6 +15,7 @@ WORKDIR /home/src/
 RUN make -f Makefile
 
 FROM centos:8
+RUN sed -i -e 's%^mirrorlist=%#mirrorlist=%' -e 's%^#baseurl=http://mirror%baseurl=https://vault%' /etc/yum.repos.d/*repo
 RUN yum -y update
 RUN yum -y upgrade
 RUN yum -y install\
