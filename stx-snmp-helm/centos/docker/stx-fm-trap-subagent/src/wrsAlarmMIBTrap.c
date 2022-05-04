@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020-2021 Wind River Systems, Inc.
+* Copyright (c) 2020-2022 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -12,6 +12,7 @@
 
 #include "wrsAlarmMIBTrap.h"
 
+#define ALARM_UUID "wrsAlarmActiveUuid"
 #define ALARM_ID "wrsAlarmActiveAlarmId"
 #define ALARM_INSTANCE_ID "wrsAlarmActiveEntityInstanceId"
 #define ALARM_DATE_TIME "wrsAlarmActiveDateAndTime"
@@ -23,6 +24,7 @@
 #define ALARM_SERVICE_AFFECTING "wrsAlarmActiveServiceAffecting"
 #define ALARM_SUPPRESSION "wrsAlarmActiveSuppressionAllowed"
 
+#define EVENT_UUID "wrsEventUuid"
 #define EVENT_ID "wrsEventEventId"
 #define EVENT_INSTANCE_ID "wrsEventEntityInstanceId"
 #define EVENT_DATE_TIME "wrsEventDateAndTime"
@@ -52,6 +54,7 @@ send_wrsAlarmCritical_trap( struct json_object *jobj )
     struct json_object *alarmObj;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmCritical_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,1 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0};
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -78,6 +81,14 @@ send_wrsAlarmCritical_trap( struct json_object *jobj )
 
 
     struct json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -115,7 +126,7 @@ send_wrsAlarmCritical_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -174,6 +185,7 @@ send_wrsAlarmMajor_trap( struct json_object *jobj )
     struct json_object *alarmObj;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmMajor_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,2 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0};
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -200,6 +212,14 @@ send_wrsAlarmMajor_trap( struct json_object *jobj )
 
 
     struct json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -236,7 +256,7 @@ send_wrsAlarmMajor_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -295,6 +315,7 @@ send_wrsAlarmMinor_trap( struct json_object *jobj )
     struct json_object *alarmObj;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmMinor_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,3 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0};
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -321,6 +342,14 @@ send_wrsAlarmMinor_trap( struct json_object *jobj )
 
 
     struct json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -358,7 +387,7 @@ send_wrsAlarmMinor_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -417,6 +446,7 @@ send_wrsAlarmWarning_trap( struct json_object *jobj )
     struct json_object *alarmObj;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmWarning_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,4 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0 };
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -443,6 +473,14 @@ send_wrsAlarmWarning_trap( struct json_object *jobj )
 
 
     struct json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -480,7 +518,7 @@ send_wrsAlarmWarning_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -540,6 +578,7 @@ send_wrsEventMessage_trap( struct json_object *jobj )
     netsnmp_variable_list  *var_list = NULL;
 
     const oid wrsAlarmMessage_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,5 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0};
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -564,6 +603,14 @@ send_wrsEventMessage_trap( struct json_object *jobj )
 
 
     json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,EVENT_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,EVENT_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -601,7 +648,7 @@ send_wrsEventMessage_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,EVENT_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -644,6 +691,7 @@ send_wrsAlarmMessage_trap( struct json_object *jobj )
     struct json_object *alarmObj;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmMessage_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,5 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0};
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -671,6 +719,14 @@ send_wrsAlarmMessage_trap( struct json_object *jobj )
 
 
     json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -708,7 +764,7 @@ send_wrsAlarmMessage_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -767,6 +823,7 @@ send_wrsAlarmClear_trap( struct json_object *jobj )
     struct json_object *alarmObj;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmClear_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,9 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveAlarmId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,3,0 };
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
@@ -787,6 +844,14 @@ send_wrsAlarmClear_trap( struct json_object *jobj )
         wrsAlarmClear_oid, sizeof(wrsAlarmClear_oid));
 
     json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_ID,&alarmObjField)) {
         const char *alarmId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -815,7 +880,7 @@ send_wrsAlarmClear_trap( struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
@@ -834,6 +899,7 @@ send_wrsAlarmHierarchicalClear_trap(struct json_object *jobj )
     int exists;
     netsnmp_variable_list  *var_list = NULL;
     const oid wrsAlarmHierarchicalClear_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,0,99 };
+    const oid wrsAlarmActiveUuid_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,2,0};
     const oid wrsAlarmActiveEntityInstanceId_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,4,0};
     const oid wrsAlarmActiveDateAndTime_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,5,0};
     const oid wrsAlarmActiveReasonText_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,7,0};
@@ -853,6 +919,14 @@ send_wrsAlarmHierarchicalClear_trap(struct json_object *jobj )
         wrsAlarmHierarchicalClear_oid, sizeof(wrsAlarmHierarchicalClear_oid));
 
     json_object *alarmObjField;
+    if(json_object_object_get_ex(alarmObj,ALARM_UUID,&alarmObjField)) {
+        const char *alarmUuid = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveUuid_oid, OID_LENGTH(wrsAlarmActiveUuid_oid),
+            ASN_OCTET_STR,
+            alarmUuid,strlen(alarmUuid));
+    }
+
     if(json_object_object_get_ex(alarmObj,ALARM_INSTANCE_ID,&alarmObjField)) {
         const char *alarmInstanceId = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
@@ -873,7 +947,7 @@ send_wrsAlarmHierarchicalClear_trap(struct json_object *jobj )
     if(json_object_object_get_ex(alarmObj,ALARM_REASON_TEXT,&alarmObjField)) {
         const char *alarmReasonText = json_object_get_string(alarmObjField);
         snmp_varlist_add_variable(&var_list,
-            wrsAlarmActiveDateAndTime_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
+            wrsAlarmActiveReasonText_oid, OID_LENGTH(wrsAlarmActiveReasonText_oid),
             ASN_OCTET_STR,
             alarmReasonText,strlen(alarmReasonText));
     }
