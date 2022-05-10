@@ -21,7 +21,7 @@ trap_subagent:
   name: trap-subagent
   image:
     repository: docker.io/starlingx/stx-fm-trap-subagent
-    tag: stx.6.0-v1.0.2
+    tag: stx.7.0-v1.0.3
   pull_policy: IfNotPresent
 
 image:
