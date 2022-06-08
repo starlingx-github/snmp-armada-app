@@ -1,10 +1,11 @@
 #
-# Copyright (c) 2020-2021 Wind River Systems, Inc.
+# Copyright (c) 2020-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 import keyring
+import sys
 from k8sapp_snmp.common import constants as app_constants
 from os import uname
 
@@ -17,7 +18,8 @@ from sysinv.db import api
 from sysinv.helm import base
 from sysinv.helm import common
 
-
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 class SnmpHelm(base.BaseHelm):
     """Class to encapsulate helm operations for the SNMP chart"""
@@ -59,7 +61,14 @@ class SnmpHelm(base.BaseHelm):
         # get_password() returns in unicode format, which leads to YAML
         # that Armada doesn't like.  Converting to UTF-8 is safe because
         # we generated the password originally.
-        return password.encode('utf8', 'strict')
+        # Update Debian: in Python3, using encode produces error connection
+        # to database.
+        ret_password = ''
+        if PY2:
+            ret_password = password.encode('utf8', 'strict')
+        if PY3:
+            ret_password = password
+        return ret_password
 
     def _get_database_connection(self):
         host_url = self._format_url_address(self._get_management_address())
