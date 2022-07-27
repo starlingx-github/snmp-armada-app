@@ -17,10 +17,10 @@
 #include <fmDbAPI.h>
 #include "snmpAgentPlugin.h"
 
-
-netsnmp_feature_require(date_n_time)
-
 #define MINLOADFREQ 2     /* min reload frequency in seconds */
+
+netsnmp_feature_require(date_n_time);
+
 
 static long Event_Log_Count = 0;
 static struct activealarm *alarm_list;

@@ -33,6 +33,7 @@ COPY Makefile .
 COPY ./src/* ./src/
 COPY --from=stx /usr/include/fmDbAPI.h /usr/include/
 COPY --from=stx /usr/include/fmAPI.h /usr/include/
+ENV LIB_DIR=/usr/lib64/
 RUN make
 
 

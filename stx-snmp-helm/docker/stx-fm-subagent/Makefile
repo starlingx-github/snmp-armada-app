@@ -10,13 +10,15 @@ MIBVER ?= 2.0
 CC=gcc
 DEST_DIR ?= /
 DATA_DIR ?= /usr/share
-LIB_DIR ?= /usr/lib64
+# LIB_DIR = /usr/lib for Debian
+# LIB_DIR = /usr/lib64 for CentOS
+
 BIN=./bin
 SOURCE=./src
 
 SRCS =  $(SOURCE)/snmpSubAgent.c $(SOURCE)/snmpActiveAlarms.c $(SOURCE)/snmpAgentPlugin.c $(SOURCE)/snmpEventLogs.c
 OBJS = $(SRCS:.c=.o)
-LDLIBS = -L/lib/x86_64-linux-gnu/ -L/usr/lib64  -lfmcommon -lnetsnmp
+LDLIBS = -L/lib/x86_64-linux-gnu/ -L$(LIB_DIR)  -lfmcommon -lnetsnmp
 LDLIBS += -lnetsnmpagent -luuid -lnetsnmpmibs  -lnetsnmphelpers
 
 INCLUDES += -I./ -I/include/net-snmp -I$(SOURCE) -I/usr/include/

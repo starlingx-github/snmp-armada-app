@@ -1,4 +1,4 @@
 BUILDER=docker
 LABEL=stx-fm-trap-subagent
 DOCKER_CONTEXT=../docker/stx-fm-trap-subagent
-DOCKER_FILE=../docker/stx-fm-trap-subagent/Dockerfile.centos
+DOCKER_FILE=../docker/stx-fm-trap-subagent/Dockerfile.debian
