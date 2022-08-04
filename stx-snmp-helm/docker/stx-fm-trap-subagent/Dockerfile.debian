@@ -1,0 +1,21 @@
+FROM debian AS base
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y update
+RUN apt-get -y install\
+           snmp snmpd snmptrapd \
+           libjson-c-dev \
+           libsnmp-dev \
+           gcc \
+           make
+
+WORKDIR /home/trapagent
+COPY src/* ./src/
+COPY Makefile .
+RUN make
+
+FROM base AS deployment-env
+WORKDIR /home/trapagent
+COPY --from=base /home/trapagent/wrsAlarmMIB .
+COPY bootstrap.sh .
+RUN chmod 755 ./bootstrap.sh
+ENTRYPOINT ["./bootstrap.sh"]
