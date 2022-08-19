@@ -13,5 +13,5 @@ Package: stx-snmp-helm
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}
-Description: StarlingX SNMP Armada Helm Charts
- This package contains Armada helm charts for the SNMP application.
+Description: StarlingX SNMP Helm Charts
+ This package contains helm FluxCD charts for the SNMP application.
