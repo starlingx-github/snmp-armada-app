@@ -7,21 +7,21 @@ replicaCount: 1
 snmp:
   image:
     repository: docker.io/starlingx/stx-snmp
-    tag: stx.6.0-v1.0.1
+    tag: stx.8.0-v1.0.0
   pull_policy: IfNotPresent
 
 subagent:
   name: sub-agent
   image:
     repository: docker.io/starlingx/stx-fm-subagent
-    tag: stx.6.0-v1.0.3
+    tag: stx.8.0-v1.0.0
   pull_policy: IfNotPresent
 
 trap_subagent:
   name: trap-subagent
   image:
     repository: docker.io/starlingx/stx-fm-trap-subagent
-    tag: stx.7.0-v1.0.3
+    tag: stx.8.0-v1.0.0
   pull_policy: IfNotPresent
 
 image:
