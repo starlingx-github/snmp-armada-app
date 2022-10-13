@@ -70,38 +70,6 @@ IMPORTS
 
 
 
-
----------------------------------------------------------------------------
--- TMS OID Definitions
---
-
--- TMS Major MIB Categories
-    idb             OBJECT IDENTIFIER ::= { tms 1 }     -- IDB MIBs
-    tmsGeneric      OBJECT IDENTIFIER ::= { tms 2 }     -- TMS Generic MIBs
-    oemSwapi        OBJECT IDENTIFIER ::= { tms 3 }     -- OEM swAPI MIBs
-    oemProd         OBJECT IDENTIFIER ::= { tms 4 }     -- OEM Product MIBs
-
--- TMS IDB Internal Module MIBs
-    rmonMib         OBJECT IDENTIFIER ::= { idb 1 }
---  garpMib         OBJECT IDENTIFIER ::= { idb 2 }         SMIv2
---  stpMib          OBJECT IDENTIFIER ::= { idb 3 }         SMIv2
-    
--- TMS Generic MIBs
---  tmsCommonMib    OBJECT IDENTIFIER ::= { tmsGeneric 1 }  SMIv2
---  tmsL3Mib        OBJECT IDENTIFIER ::= { tmsGeneric 2 }  SMIv2
-
--- OEM swAPI MIBs
---  pmSwapi         OBJECT IDENTIFIER ::= { oemSwapi 1 }    SMIv2
---  bcmSwapi        OBJECT IDENTIFIER ::= { oemSwapi 2 }    SMIv2
---  pcSwapi         OBJECT IDENTIFIER ::= { oemSwapi 3 }    SMIv2
-
--- OEM Product MIBs
---  pm3575          OBJECT IDENTIFIER ::= { oemProd 1 }     SMIv2
---  bcm5600         OBJECT IDENTIFIER ::= { oemProd 2 }     SMIv2
---  pcSwitch        OBJECT IDENTIFIER ::= { oemProd 3 }     SMIv2
-
-
-
 ---------------------------------------------------------------------------
 -- General Textual Conventions
 --
