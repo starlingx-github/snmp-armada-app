@@ -1,3 +1,0 @@
-SRC_DIR="k8sapp_snmp"
-
-TIS_PATCH_VER=PKG_GITREVCOUNT

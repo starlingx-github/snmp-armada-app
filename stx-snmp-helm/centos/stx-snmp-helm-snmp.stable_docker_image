@@ -1,4 +1,0 @@
-BUILDER=docker
-LABEL=stx-snmp
-DOCKER_CONTEXT=../docker/stx-snmp
-DOCKER_FILE=../docker/stx-snmp/Dockerfile.centos

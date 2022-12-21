@@ -1,7 +1,7 @@
 ---
-debname: stx-snmp-helm
+debname: python3-k8sapp-snmp
 debver: 1.0-1
-src_path: stx-snmp-helm
+src_path: k8sapp_snmp
 revision:
   dist: $STX_DIST
   GITREVCOUNT:
