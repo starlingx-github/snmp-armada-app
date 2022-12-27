@@ -30,7 +30,7 @@
     vars:
         tox_envlist: py39
         python_version: 3.9
-        tox_extra_args: python-k8sapp-snmp/k8sapp_snmp/tox.ini
+        tox_extra_args: -c python-k8sapp-snmp/k8sapp_snmp/tox.ini
 - job:
     name: stx-snmp-armada-app-upload-git-mirror
     parent: upload-git-mirror
