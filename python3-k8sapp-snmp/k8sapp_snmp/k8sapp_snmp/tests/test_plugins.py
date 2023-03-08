@@ -10,7 +10,6 @@ from k8sapp_snmp.helm.snmp import SnmpHelm
 
 from sysinv.common import constants
 from sysinv.tests.db import base as dbbase
-from sysinv.tests.helm.test_helm import HelmOperatorTestSuiteMixin
 
 
 class K8SAppSnmpAppMixin(object):
@@ -33,7 +32,6 @@ class K8SAppSnmpAppMixin(object):
 class K8sAppSnmpControllerTestCase(K8SAppSnmpAppMixin,
                                       dbbase.BaseIPv6Mixin,
                                       dbbase.BaseCephStorageBackendMixin,
-                                      HelmOperatorTestSuiteMixin,
                                       dbbase.ControllerHostTestCase):
     pass
 
@@ -45,6 +43,5 @@ class K8sAppSnmpControllerTestCase(K8SAppSnmpAppMixin,
 # - snmp app
 class K8SAppSnmpAIOTestCase(K8SAppSnmpAppMixin,
                                dbbase.BaseCephStorageBackendMixin,
-                               HelmOperatorTestSuiteMixin,
                                dbbase.AIOSimplexHostTestCase):
     pass

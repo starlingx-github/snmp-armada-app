@@ -21,6 +21,8 @@ class SnmpTestCase(test_plugins.K8SAppSnmpAppMixin,
         self.app = dbutils.create_test_app(name='snmp')
         self.dbapi = dbapi.get_instance()
 
-class SnmpTestCase(SnmpTestCase, dbbase.ProvisionedControllerHostTestCase):
-    pass
+class SnmpTestCaseDummy(SnmpTestCase, dbbase.ProvisionedControllerHostTestCase):
+    # without a test zuul will fail
+    def test_dummy(self):
+        pass
 
