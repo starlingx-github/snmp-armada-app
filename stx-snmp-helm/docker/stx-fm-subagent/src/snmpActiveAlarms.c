@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020-2021 Wind River Systems, Inc.
+* Copyright (c) 2020-2023 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -75,6 +75,7 @@ Alarm_Scan_Init()
             DEBUGMSG(("cgtsAgentPlugin", 
             "get_all_alarms returns false (%zu/%d). Try again\n",
              (i+1), retryCount));
+            renewAlarmSession();
         }
     }
     if (!isAlarmObtained) {

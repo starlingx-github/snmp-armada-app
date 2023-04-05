@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 Wind River Systems, Inc.
+* Copyright (c) 2020-2023 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -62,6 +62,7 @@ extern "C" {
 void  init_snmpAgentPlugin(void);
 void  deinit_snmpAgentPlugin(void);
 TFmAlarmSessionT getAlarmSession();
+void  renewAlarmSession(void);
 #ifdef __cplusplus
 }
 #endif

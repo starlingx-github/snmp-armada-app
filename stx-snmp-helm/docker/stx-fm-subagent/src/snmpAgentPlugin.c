@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 Wind River Systems, Inc.
+* Copyright (c) 2020-2023 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -121,6 +121,15 @@ struct variable2 event_log_variables[] = {
 TFmAlarmSessionT getAlarmSession()
 {
     return alm_handle;
+}
+
+void
+renewAlarmSession(void)
+{
+    fm_snmp_util_destroy_session(alm_handle);
+    if (fm_snmp_util_create_session(&alm_handle, NULL) != true){
+        snmp_log(LOG_ERR,"failed to renew alarm database handler\r\n");
+    }
 }
 
 /*
