@@ -7,7 +7,7 @@ RUN apt-get -y install\
            fm-common \
            fm-common-dev
 
-FROM debian AS base
+FROM debian:11 AS base
 RUN apt-get -y update
 RUN apt-get -y install\
            snmp snmpd snmptrapd \
