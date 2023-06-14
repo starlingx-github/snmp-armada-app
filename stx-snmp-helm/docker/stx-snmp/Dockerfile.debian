@@ -1,4 +1,4 @@
-FROM debian AS builder
+FROM debian:11 AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update
 RUN apt-get -y install\
