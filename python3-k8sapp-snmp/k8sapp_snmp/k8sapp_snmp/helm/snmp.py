@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 Wind River Systems, Inc.
+# Copyright (c) 2020-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -14,6 +14,7 @@ from six import ensure_text
 from six import string_types
 from sysinv.common import constants
 from sysinv.common import exception
+from sysinv.common import utils
 from sysinv.db import api
 from sysinv.helm import base
 from sysinv.helm import common
@@ -71,7 +72,9 @@ class SnmpHelm(base.BaseHelm):
         return ret_password
 
     def _get_database_connection(self):
-        host_url = self._format_url_address(self._get_management_address())
+        host_url = (constants.CONTROLLER_FQDN if utils.is_fqdn_ready_to_use()
+                    else self._format_url_address(self._get_management_address()))
+
         auth_password = self._get_keyring_password(
             self.SERVICE_FM_NAME, 'database')
         connection = "postgresql://%s:%s@%s/%s" %\
