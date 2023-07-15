@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020-2022 Wind River Systems, Inc.
+* Copyright (c) 2020-2023 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -32,7 +32,9 @@
 #define EVENT_REASON_TEXT "wrsEventReasonText"
 #define EVENT_EVENT_TYPE "wrsEventEventType"
 #define EVENT_CAUSE "wrsEventProbableCause"
+#define EVENT_REPAIR_ACTION "wrsEventProposedRepairAction"
 #define EVENT_SERVICE_AFFECTING "wrsEventServiceAffecting"
+#define EVENT_SUPPRESSION "wrsEventSuppressionAllowed"
 
 #define ALARM_CRITICAL "wrsAlarmCritical"
 #define ALARM_MAJOR "wrsAlarmMajor"
@@ -586,7 +588,9 @@ send_wrsEventMessage_trap( struct json_object *jobj )
     const oid wrsAlarmActiveReasonText_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,7,0};
     const oid wrsAlarmActiveEventType_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,8,0};
     const oid wrsAlarmActiveProbableCause_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,9,0};
+    const oid wrsAlarmActiveProposedRepairAction_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,10,0};
     const oid wrsAlarmActiveServiceAffecting_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,11,0};
+    const oid wrsAlarmActiveSuppressionAllowed_oid[] = { 1,3,6,1,4,1,731,1,1,1,1,1,1,12,0};
 
     exists=json_object_object_get_ex(jobj,"alarm",&alarmObj);
     if(exists==0) {
@@ -669,12 +673,28 @@ send_wrsEventMessage_trap( struct json_object *jobj )
             &probableCause,sizeof(probableCause));
     }
 
+    if(json_object_object_get_ex(alarmObj,EVENT_REPAIR_ACTION,&alarmObjField)) {
+        const char *proposedRepairAction = json_object_get_string(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveProposedRepairAction_oid, OID_LENGTH(wrsAlarmActiveProposedRepairAction_oid),
+            ASN_OCTET_STR,
+            proposedRepairAction,strlen(proposedRepairAction));
+    }
+
     if(json_object_object_get_ex(alarmObj,EVENT_SERVICE_AFFECTING,&alarmObjField)) {
         int serviceAffecting = json_object_get_int(alarmObj);
         snmp_varlist_add_variable(&var_list,
             wrsAlarmActiveServiceAffecting_oid, OID_LENGTH(wrsAlarmActiveServiceAffecting_oid),
             ASN_INTEGER,
             &serviceAffecting,sizeof(serviceAffecting));
+    }
+
+    if(json_object_object_get_ex(alarmObj,EVENT_SUPPRESSION,&alarmObjField)) {
+        int activeSuppressionAllowed = json_object_get_int(alarmObjField);
+        snmp_varlist_add_variable(&var_list,
+            wrsAlarmActiveSuppressionAllowed_oid, OID_LENGTH(wrsAlarmActiveSuppressionAllowed_oid),
+            ASN_INTEGER,
+            &activeSuppressionAllowed,sizeof(activeSuppressionAllowed));
     }
 
     snmp_log(LOG_INFO,"wrsEvent Message trap sent\n");
