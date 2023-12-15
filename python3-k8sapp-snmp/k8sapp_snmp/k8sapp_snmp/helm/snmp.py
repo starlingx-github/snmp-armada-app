@@ -22,6 +22,7 @@ from sysinv.helm import common
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
+
 class SnmpHelm(base.BaseHelm):
     """Class to encapsulate helm operations for the SNMP chart"""
 
@@ -45,14 +46,14 @@ class SnmpHelm(base.BaseHelm):
         if isinstance(data, string_types):
             try:
                 result = ensure_str(data)
-                #Try to encode to detect bad translation
-                #for multi-bytes characters
+                # Try to encode to detect bad translation
+                # for multi-bytes characters
                 result.encode('utf-8')
-                return  result
-            except Exception as e:
+                return result
+            except Exception:
                 return ensure_text(data)
         else:
-            #If data is NoneType
+            # If data is NoneType
             return ensure_str(self.UNDEFINED_CONF_VALUE)
 
     def _get_keyring_password(self, service, user):
@@ -108,11 +109,11 @@ class SnmpHelm(base.BaseHelm):
             common.HELM_NS_KUBE_SYSTEM: {
                 'configmap': {
                     'connection': self._unicode_represent(db_url),
-                    'system_contact' : self._unicode_represent(system.contact),
-                    'system_location' : self._unicode_represent(
+                    'system_contact': self._unicode_represent(system.contact),
+                    'system_location': self._unicode_represent(
                         system.location),
-                    'system_name' : self._unicode_represent(system.name),
-                    'system_description' : self._unicode_represent(
+                    'system_name': self._unicode_represent(system.name),
+                    'system_description': self._unicode_represent(
                         system.software_version) + ' ' + self.get_system_info()
                 },
             }
