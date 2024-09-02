@@ -8,7 +8,7 @@ LIBCGTSAGENT_SO := libsnmpAuditPlugin.so
 MAJOR ?= 1
 MINOR ?= 0
 PATCH ?= 0
-DESTDIR ?= /usr/lib64
+DESTDIR ?= /usr/lib
 
 build: lib
 
@@ -24,7 +24,7 @@ clean:
 	@rm -f $(OBJ) *.o *.so.*
 
 install:
-	install -m 755 -d $(DESTDIR)$(LIB_DIR)
-	install -m 755 $(LIBCGTSAGENT_SO).$(MAJOR).$(MINOR).$(PATCH) $(DESTDIR)$(LIB_DIR)
-	ln -s $(LIBCGTSAGENT_SO).$(MAJOR).$(MINOR).$(PATCH) $(DESTDIR)$(LIB_DIR)/$(LIBCGTSAGENT_SO).$(MAJOR)
-	ln -s $(LIBCGTSAGENT_SO).$(MAJOR).$(MINOR).$(PATCH) $(DESTDIR)$(LIB_DIR)/$(LIBCGTSAGENT_SO)
+	install -m 755 -d $(DESTDIR)
+	install -m 755 $(LIBCGTSAGENT_SO).$(MAJOR).$(MINOR).$(PATCH) $(DESTDIR)
+	ln -s $(LIBCGTSAGENT_SO).$(MAJOR).$(MINOR).$(PATCH) $(DESTDIR)/$(LIBCGTSAGENT_SO).$(MAJOR)
+	ln -s $(LIBCGTSAGENT_SO).$(MAJOR).$(MINOR).$(PATCH) $(DESTDIR)/$(LIBCGTSAGENT_SO)
