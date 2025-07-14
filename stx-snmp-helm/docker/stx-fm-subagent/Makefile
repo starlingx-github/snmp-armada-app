@@ -7,7 +7,7 @@ MINOR ?= 0
 PATCH ?= 0
 MIBVER ?= 2.0
 
-CC=gcc
+CC=g++
 DEST_DIR ?= /
 DATA_DIR ?= /usr/share
 # LIB_DIR = /usr/lib for Debian
