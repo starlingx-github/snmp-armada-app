@@ -21,7 +21,9 @@ RUN apt-get -y install\
            gcc \
 	   g++ \
            make \
-           uuid-dev
+           uuid-dev \
+           # CVE-2023-33204 mitigation
+           sysstat
 
 WORKDIR /home/sub-agent
 COPY --from=stx /usr/lib/libfmcommon.so.1.0 /usr/lib/
@@ -38,7 +40,20 @@ RUN make
 
 
 FROM base AS deployment-env
+
+# Create non-root user for security compliance (CIS Docker v1.5.0 - 4.1)
+ENV SNMP_USER=snmp
+ENV SNMP_GROUP=snmp
+RUN groupadd -r ${SNMP_GROUP} && useradd -r -g ${SNMP_GROUP} -d /home/${SNMP_USER} -s /bin/bash ${SNMP_USER}
+RUN mkdir -p /home/${SNMP_USER} && chown -R ${SNMP_USER}:${SNMP_GROUP} /home/${SNMP_USER}
+
+WORKDIR /home/${SNMP_USER}
 COPY --from=base /home/sub-agent/snmpSubAgent .
 COPY bootstrap.sh .
 RUN chmod 755 bootstrap.sh
+RUN chown -R ${SNMP_USER}:${SNMP_GROUP} /home/${SNMP_USER}
+
+# Switch to non-root user
+USER ${SNMP_USER}
+
 ENTRYPOINT ["./bootstrap.sh"]
