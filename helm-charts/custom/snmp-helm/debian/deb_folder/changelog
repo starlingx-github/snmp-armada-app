@@ -1,3 +1,9 @@
+snmp-helm (1.1-0) unstable; urgency=medium
+
+  * New upstream release 1.1-0
+
+ -- gdinizcr <gabriel.DinizCremel@windriver.com>  Tue, 18 Nov 2025 12:22:16 +0000
+
 snmp-helm (1.0-0) unstable; urgency=medium
 
   * Initial release.
