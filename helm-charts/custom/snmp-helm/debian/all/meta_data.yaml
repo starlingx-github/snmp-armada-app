@@ -1,6 +1,6 @@
 ---
 debname: snmp-helm
-debver: 1.0-0
+debver: 1.1-0
 src_path: snmp-helm
 revision:
   dist: $STX_DIST

@@ -11,14 +11,19 @@ FROM debian:11 AS base
 RUN apt-get -y update
 RUN apt-get -y install\
            snmp snmpd snmptrapd \
-           libpython2.7 \
+           # Removed libpython2.7 - vulnerable to CVE-2022-48565 (XXE in plistlib)
+           # Note: C code doesn't link against Python libraries, so Python 2.7 was unnecessary
+           # Keeping Python 3 for potential future use and system compatibility
            python3 python3-dev python3-setuptools python-is-python3 \
            postgresql-13 \
            libsnmp-dev \
            libjson-c-dev \
            gcc \
+	   g++ \
            make \
-           uuid-dev
+           uuid-dev \
+           # CVE-2023-33204 mitigation
+           sysstat
 
 WORKDIR /home/sub-agent
 COPY --from=stx /usr/lib/libfmcommon.so.1.0 /usr/lib/
@@ -35,7 +40,20 @@ RUN make
 
 
 FROM base AS deployment-env
+
+# Create non-root user for security compliance (CIS Docker v1.5.0 - 4.1)
+ENV SNMP_USER=snmp
+ENV SNMP_GROUP=snmp
+RUN groupadd -r ${SNMP_GROUP} && useradd -r -g ${SNMP_GROUP} -d /home/${SNMP_USER} -s /bin/bash ${SNMP_USER}
+RUN mkdir -p /home/${SNMP_USER} && chown -R ${SNMP_USER}:${SNMP_GROUP} /home/${SNMP_USER}
+
+WORKDIR /home/${SNMP_USER}
 COPY --from=base /home/sub-agent/snmpSubAgent .
 COPY bootstrap.sh .
 RUN chmod 755 bootstrap.sh
+RUN chown -R ${SNMP_USER}:${SNMP_GROUP} /home/${SNMP_USER}
+
+# Switch to non-root user
+USER ${SNMP_USER}
+
 ENTRYPOINT ["./bootstrap.sh"]

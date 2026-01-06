@@ -14,7 +14,7 @@ subagent:
   name: sub-agent
   image:
     repository: docker.io/starlingx/stx-fm-subagent
-    tag: stx.9.0-v1.0.1
+    tag: stx.11.0-v1.0.2
   pull_policy: IfNotPresent
 
 trap_subagent:

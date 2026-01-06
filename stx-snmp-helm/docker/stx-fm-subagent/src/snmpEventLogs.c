@@ -26,7 +26,7 @@ static long Event_Log_Count = 0;
 static struct activealarm *alarm_list;
 static struct activealarm *alarmaddr, savealarm, *savealarmaddr;
 static int saveIndex = 0;
-static int retryCount = 5;
+static size_t retryCount = 5;
 static char saveUuid[36];
 static long LastLoad = 0;     /* ET in secs at last table load */
 extern long long_return;
@@ -73,7 +73,7 @@ Event_Log_Scan_Init()
             break;
         } else {
             DEBUGMSG(("cgtsAgentPlugin", 
-            "get_all_event_logs returns false (%zu/%d). Try again\n",
+            "get_all_event_logs returns false (%zu/%ld). Try again\n",
              (i+1), retryCount));
             renewAlarmSession();
         }
